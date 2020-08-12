@@ -1,4 +1,4 @@
-# Choco-All-the-Things
+# Chocolatey-Dip
 Use Chocolately to quickly install all of the tools and modules that I need on a new machine build.
 
 ### To Do
