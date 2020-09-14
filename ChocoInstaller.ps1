@@ -1,5 +1,6 @@
 # Allow the current PowerShell process to bypass execution policies in order to download and run the chocolatey installer.
-Set-ExecutionPolicy Bypass -Scope Process -Force; [System.Net.ServicePointManager]::SecurityProtocol = [System.Net.ServicePointManager]::SecurityProtocol -bor 3072; iex ((New-Object System.Net.WebClient).DownloadString('https://chocolatey.org/install.ps1'))choco feature enable -n=allowGlobalConfirmation
+Set-ExecutionPolicy Bypass -Scope Process -Force; [System.Net.ServicePointManager]::SecurityProtocol = [System.Net.ServicePointManager]::SecurityProtocol -bor 3072; iex ((New-Object System.Net.WebClient).DownloadString('https://chocolatey.org/install.ps1'))
+choco feature enable -n=allowGlobalConfirmation
 
 # List all of the packages for chocolately to install. Each should be in double quotes followed by a comma.
 $install = @( 
@@ -46,4 +47,4 @@ $install = @(
 foreach ($package in $install) { choco install $package }
 
 #Update all installed chocolately packages. Add parameter handling to the script so it can be run with the -install or -update parameters.
-choco update all
+choco upgrade all
