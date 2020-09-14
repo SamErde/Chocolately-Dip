@@ -1,8 +1,7 @@
-#Allow the current PowerShell process to bypass execution policies in order to download and run the chocolatey installer.
-Set-ExecutionPolicy Bypass -Scope Process -Force; Invoke-Expression ((New-Object System.Net.WebClient).DownloadString('https://chocolatey.org/install.ps1'))
-choco feature enable -n=allowGlobalConfirmation
+# Allow the current PowerShell process to bypass execution policies in order to download and run the chocolatey installer.
+Set-ExecutionPolicy Bypass -Scope Process -Force; [System.Net.ServicePointManager]::SecurityProtocol = [System.Net.ServicePointManager]::SecurityProtocol -bor 3072; iex ((New-Object System.Net.WebClient).DownloadString('https://chocolatey.org/install.ps1'))choco feature enable -n=allowGlobalConfirmation
 
-#List all of the packages for chocolately to install. Each should be in double quotes followed by a comma.
+# List all of the packages for chocolately to install. Each should be in double quotes followed by a comma.
 $install = @( 
     "7zip.install",             #7-Zip
     "authy-desktop",            #Authy TFA App
