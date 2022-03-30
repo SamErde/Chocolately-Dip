@@ -8,3 +8,12 @@ Wrap in a function.
  - Define install function
  - Define update/upgrade function
  - Set default function
+
+## ChocoInstaller.ps1
+Installs Chocolatey for the current user and then installs or updates all listed apps from the Chocolatey repository.  
+
+## WingetInstaller.ps1
+Installs the given list of packages from the Winget repository or from the Microsoft Store (requires a Microsoft Store account to be configured in Windows).  
+
+## InstallPowerShellModules.ps1
+Installs a list of PowerShell modules that are likely to be used by an infrastructure or systems engineer.
