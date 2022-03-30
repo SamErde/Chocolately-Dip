@@ -17,10 +17,3 @@ winget install -e --id Dell.CommandUpdate
 winget install -e --id Devolutions.RemoteDesktopManagerFree
 winget install -e --id WinSCP.WinSCP
 winget install -e --id SlackTechnologies.Slack
-
-# PowerShell Modules
-# Install these for Windows PowerShell 5.1 and PowerShell Core 7+
-Install-Module Microsoft.Graph
-Install-Module AzureAD
-Install-Module Az
-Install-Module ExchangeOnlineManagement
