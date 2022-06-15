@@ -1,19 +1,19 @@
 # Requires Winget via the Desktop App Installer package and the VC Lib 140 prerequesite.
+$install = @(
+  "Microsoft.PowerShell"
+  "JanDeDobbeleer.OhMyPosh"
+  "Microsoft.VisualStudioCode"
+  "Git.Git"
+  "Microsoft.GitCredentialManagerCore"
+  "GitHub.GitHubDesktop"
+  "Twilio.Authy"
+  "LogMeIn.LastPass"
+  "Microsoft.PowerToys"
+  "7zip.7zip"
+  "Dell.CommandUpdate"
+  "Devolutions.RemoteDesktopManagerFree"
+  "WinSCP.WinSCP"
+  "SlackTechnologies.Slack"
+)
 
-winget install -e --id Microsoft.PowerShell
-winget install -e --id JanDeDobbeleer.OhMyPosh
-
-winget install -e --id Microsoft.VisualStudioCode
-winget install -e --id Git.Git
-winget install -e --id Microsoft.GitCredentialManagerCore
-winget install -e --id GitHub.GitHubDesktop
-
-winget install -e --id Twilio.Authy
-winget install -e --id LogMeIn.LastPass
-
-winget install -e --id Microsoft.PowerToys
-winget install -e --id 7zip.7zip
-winget install -e --id Dell.CommandUpdate
-winget install -e --id Devolutions.RemoteDesktopManagerFree
-winget install -e --id WinSCP.WinSCP
-winget install -e --id SlackTechnologies.Slack
+foreach ($package in $install) { winget install -e --id $package }
