@@ -3,7 +3,7 @@ Set-ExecutionPolicy Bypass -Scope Process -Force; [System.Net.ServicePointManage
 choco feature enable -n=allowGlobalConfirmation
 
 # List all of the packages for chocolately to install. Each should be in double quotes followed by a comma.
-$install = @( 
+$pkgs = @( 
     "7zip.install",             #7-Zip
     "authy-desktop",            #Authy TFA App
     "azure-cli",                #Azure CLI Tools
@@ -43,8 +43,21 @@ $install = @(
     "youtube-dl"                #YouTube Downloader
     )
 
-#Install each package that is listed in the multi-line string variable.
-foreach ($package in $install) { choco install $package }
+    param(
+        [Parameter(Mandatory=$False)]
+        [switch]$install,
+        [switch]$update
+    )
 
-#Update all installed chocolately packages. Add parameter handling to the script so it can be run with the -install or -update parameters.
-choco upgrade all
+If($install){
+    #Install each package that is listed in the multi-line string variable.
+    foreach ($package in $pkgs) { choco install $package }
+}
+
+If($update){
+    #Update all installed chocolately packages.
+    choco upgrade all
+}
+
+
+
