@@ -1,5 +1,14 @@
+function Run-WinDip {
+
+[CmdletBinding()]
+param(
+  [switch]$InstallApps,
+  [switch]$UpdateApps,
+  [switch]$InstallWinget
+)
+
 # Requires Winget via the Desktop App Installer package and the VC Lib 140 prerequesite.
-$install = @(
+$Packages = @(
   "Microsoft.PowerShell"
   "JanDeDobbeleer.OhMyPosh"
   "Microsoft.VisualStudioCode"
@@ -16,19 +25,46 @@ $install = @(
   "SlackTechnologies.Slack"
 )
 
-param(
-  [Parameter(Mandatory=$False)]
-  [switch]$install,
-  [switch]$update
-)
-
-If($install){
-#Install each package that is listed in the multi-line string variable.
-foreach ($package in $install) { winget install -e --id $package }
+if ($InstallApps) {
+    #Install each package that is listed in the multi-line string variable.
+    foreach ($package in $Packages) {
+        winget install -e --id $package
+    }
 }
 
-If($update){
-#Update all installed winget packages. This will ugprade all packages which are installed on the computer and which are located in the msstore or winget sources.
-#Running this command will also upgrade packages which were installed directly but for which there is a package in the msstore or winget sources.
-winget upgrade -e --accept-package-agreements --all
+if ($UpdateApps) {
+    #Update all installed winget packages. This will ugprade all packages which are installed on the computer and which are located in the msstore or winget sources.
+    #Running this command will also upgrade packages which were installed directly but for which there is a package in the msstore or winget sources.
+    winget upgrade -e --accept-package-agreements --all
 }
+
+if ($InstallWinget) {
+    if (!(Test-Path -Path "$Env:WinDir\Temp\WinGetInstall")) {
+        New-Item -ItemType Directory -Name "WinGetInstall" -Path "$Env:WinDir\Temp"
+    }
+    Set-Location -Path "$Env:WinDir\Temp\WinGetInstall"
+
+    $DownloadLinks = ( ((Invoke-WebRequest -Uri "https://github.com/microsoft/winget-cli/releases/latest" -UseBasicParsing).Links).Where({
+        $_.outerHtml -like "*/releases/download/*" }) ).href | ForEach {
+            -join ("https://github.com", $_)
+        }
+
+    ForEach ($Link in $DownloadLinks) {
+        $FileName = $Link -replace '^.*/'
+        Invoke-WebRequest -Uri $Link -OutFile $FileName
+    }
+
+    # Why does this create an empty item as the first object in the array?
+    $Packages = $DownloadLinks.Where({ $_ -like "*.msixbundle" }) | ForEach {
+        $_ -replace '^.*/'
+    }
+
+    # Add step to install the package.
+        # May need to install as SYSTEM.
+        # Add-AppxPackage only works in Windows PowerShell (not 7).
+        # Invoke-Item is interactive and probably should not be used for deployment scripts.
+}
+
+}
+
+Run-WinDip
