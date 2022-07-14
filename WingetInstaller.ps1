@@ -54,13 +54,11 @@ if ($InstallWinget) {
         Invoke-WebRequest -Uri $Link -OutFile $FileName
     }
 
-    # Why does this create an empty item as the first object in the array?
     $Packages = $DownloadLinks.Where({ $_ -like "*.msixbundle" }) | ForEach {
         $_ -replace '^.*/'
     }
 
     # Add step to install the package.
-        # May need to install as SYSTEM.
         # Add-AppxPackage only works in Windows PowerShell (not 7).
         # Invoke-Item is interactive and probably should not be used for deployment scripts.
 }
