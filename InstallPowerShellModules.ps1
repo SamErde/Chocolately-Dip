@@ -5,7 +5,7 @@ Set-PSRepository -Name 'PSGallery' -InstallationPolicy Trusted
     Install-Module -Name posh-git
     # Provides prompt with Git status summary information and tab completion for Git commands, parameters, remotes and branch names.
 
-    Install-Module -Name oh-my-posh
+    # Install-Module -Name oh-my-posh # Deprecated
     # A prompt theme engine for any shell. Will also want special fonts.
 
     Install-Module -Name PSScriptAnalyzer
