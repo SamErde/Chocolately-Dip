@@ -2,18 +2,15 @@
 Set-PSRepository -Name 'PSGallery' -InstallationPolicy Trusted
 
 # Make your prompt better:
-    Install-Module -Name posh-git
+    Install-Module -Name posh-git -Force
     # Provides prompt with Git status summary information and tab completion for Git commands, parameters, remotes and branch names.
 
-    # Install-Module -Name oh-my-posh # Deprecated
-    # A prompt theme engine for any shell. Will also want special fonts.
-
-    Install-Module -Name PSScriptAnalyzer
+    Install-Module -Name PSScriptAnalyzer -Force
     # PSScriptAnalyzer provides script analysis and checks for potential code defects in the scripts by applying a group of built-in or customized rules on the scripts being analyzed.
 
 
 # General Infrastructure Operations
-    Install-Module -Name SwisPowerShell
+    Install-Module -Name SwisPowerShell -Force
     # This PowerShell module contains cmdlets for managing SolarWinds Orion.
 
     Install-Module -Name PSPKI
@@ -48,10 +45,10 @@ Set-PSRepository -Name 'PSGallery' -InstallationPolicy Trusted
 # Microsoft 365 and Azure
     Install-Module -Name Microsoft.Graph
     # Graph is becoming the overall go-to method for interacting with M365 and Azure, and slowly replacing other modules.
-    
-    Install-Module -Name MSOnline
+
+    # Install-Module -Name MSOnline
     Install-Module -Name Az
-    Install-Module -Name AzureAD
+    # Install-Module -Name AzureAD
     Install-Module -Name ExchangeOnlineManagement
     Install-Module -Name MicrosoftTeams
     Install-Module -Name Microsoft.Online.SharePoint.PowerShell
