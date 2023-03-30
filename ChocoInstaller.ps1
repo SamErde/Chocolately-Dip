@@ -15,18 +15,12 @@ $Packages = @(
     "authy-desktop",            #Authy TFA App
     "azure-cli",                #Azure CLI Tools
     "azurepowershell",          #PowerShell Module for Azure
-    "burnttoast-psmodule",      #PowerShell Module for Toast Notifications
-    "carbon",                   #Carbon PowerShell Module
-    "conemu",                   #ConEmu (Pop-up Console Emulator)
     "curl",                     #curl
     "dellcommandupdate",        #Dell Command Update
     "filezilla",                #FileZilla
     "firefox",                  #Firefox
-    "foxitreader",              #Foxit PDF Reader
     "git.install",              #Git
     "googlechrome",             #Chrome
-    "iissecurity-psmodule",     #PowerShell Module for IIS Security
-    "jre8",                     #Java Runtime
     "lastpass",                 #LastPass
     "lastpass-for-applications", 
     "ntfssecurity-psmodule",    #PowerShell Module for NTFS Security
@@ -34,7 +28,6 @@ $Packages = @(
     "orionsdk",                 #Solarwinds Orion SDK and PowerShell Module
     "poshadmin",                #PowerShell Admin
     "powershell-core",          #PowerShell 6.0 Core
-    "powershellhere",           #Open a PowerShell prompt 'here'
     "putty.install",            #PuTTy
     "psget",                    #PSGet (NuGet for PowerShell)
     "rdmfree",                  #Remote Desktop Manager
@@ -42,9 +35,7 @@ $Packages = @(
     "rvtools",                  #RVtools
     "sysinternals",             #SysInternals
     "treesizefree",             #TreeSize Free
-    "vmware-powercli-psmodule", #VMware PowerCLI
     "vscode",                   #Visual Studio Code
-    "vscode-docker",            #Docker Extension for VS Code
     "vscode-powershell",        #PowerShell Extension for VS Code
     "winscp",                   #WinSCP
     "youtube-dl"                #YouTube Downloader
