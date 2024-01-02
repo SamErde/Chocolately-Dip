@@ -1,5 +1,7 @@
 function Update-Everything {
+    [CmdletBinding()]
     [Alias("upupdate")]
+    param ()
 
     # Update all PowerShell modules
     Update-Module
