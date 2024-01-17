@@ -10,61 +10,60 @@ function Install-MyModules {
         [switch]$SelectFromList,
 
         # Select modules by tag
-        [Parameter(ParameterSetName = 'SelectFromList')]
-        [Parameter(ParameterSetName = 'Tag')]
-        [string]$Tag
+        [Parameter()]
+        [array]$Tags
     )
     
     begin {
         # Populate the list of modules to install
         $ModuleList = [System.Collections.ArrayList]::new()
-        $null = $ModulesToInstall.Add(([PSCustomObject]@{
+        $null = $ModuleList.Add(([PSCustomObject]@{
             Name            = 'Microsoft.PowerShell.ConsoleGuiTools'
             Description     = ''
             Url             = ''
-            Tags            = @('Utilities','UI')
+            Tag            = 'Utilities','UI'
             UsePreRelease   = $false
         }))
-        $null = $ModulesToInstall.Add(([PSCustomObject]@{
+        $null = $ModuleList.Add(([PSCustomObject]@{
             Name            = 'PSPKI'
             Description     = ''
             Url             = ''
-            Tags            = @('PKI','security','ActiveDirectory','ADCS')
+            Tag            = 'PKI','security','ActiveDirectory','ADCS'
             UsePreRelease   = $false
         }))
         $null = $ModuleList.Add(([PSCustomObject]@{
             Name            = 'Locksmith'
             Description     = ''
             Url             = ''
-            Tags            = @('PKI','security','ActiveDirectory','ADCS')
+            Tag            = 'PKI','security','ActiveDirectory','ADCS'
             UsePreRelease   = $false
         }))
         $null = $ModuleList.Add(([PSCustomObject]@{
             Name            = 'Terminal-Icons'
             Description     = 'Make the Windows Terminal look better.'
             Url             = ''
-            Tags            = @('Windows-Terminal','UI')
+            Tag            = 'Windows-Terminal','UI'
             UsePreRelease   = $false
         }))
         $null = $ModuleList.Add(([PSCustomObject]@{
             Name            = 'Posh'
             Description     = 'Make PowerShell look better...'
             Url             = ''
-            Tags            = @('UI')
+            Tag            = 'UI'
             UsePreRelease   = $false
         }))
         $null = $ModuleList.Add(([PSCustomObject]@{
             Name            = 'posh-git'
             Description     = 'Work with GitHub'
             Url             = ''
-            Tags            = @('git')
+            Tag            = 'git'
             UsePreRelease   = $false
         }))
         $null = $ModuleList.Add(([PSCustomObject]@{
             Name            = 'PowerShellHumanizer'
             Description     = ''
             Url             = ''
-            Tags            = @('UI','Utilities','Useful-Functions')
+            Tag            = 'UI','Utilities','Useful-Functions'
             UsePreRelease   = $false
         }))
         # Finished populating the ModuleList
@@ -72,45 +71,62 @@ function Install-MyModules {
         # Use the PowerShell Gallery to install modules and set it as a trusted source.
         Set-PSRepository -Name 'PSGallery' -InstallationPolicy Trusted
 
+        if ((Get-Command Out-ConsoleGridView -ErrorAction SilentlyContinue) -and ($PSVersionTable.PSVersion.Major -ge 7)) {
+            $OutConsoleGridView = $true
+        }
+        if (Get-Command -Name Out-GridView -ErrorAction SilentlyContinue) {
+            $OutGridView = $true
+        }
+
     } # begin
     
     process {
+
+        # Create a filter if the Tag parameter is used
+        if ($Tags) {
+            $TagFilter = [ScriptBlock]::Create({ $_.Tag -in $Tags })
+        }
+        else {
+            $TagFilter = [ScriptBlock]::Create({ $_ })
+        }
+
         # Let the user select modules to install from a grid view.
         if ( $SelectFromList ) {
             $GridViewTitle = 'Select the modules to install and press Enter or click OK to continue...'
-        
+
             # Check for Out-GridView or Out-ConsoleGridView
             # Pipe the sorted module list to a grid view and save the selected list
-            if ((Get-Command Out-ConsoleGridView -ErrorAction SilentlyContinue) -and ($PSVersionTable.PSVersion.Major -ge 7)) {
-                [array]$ModulesToInstall = ( $ModuleList | 
-                    Select-Object Name,Category,Description | 
-                        Sort-Object -Property Name | 
-                            Out-ConsoleGridView -OutputMode Multiple -Title $GridViewTitle )
+            if ($OutConsoleGridView) {
+                [array]$ModulesToInstall = ( $ModuleList | Where-Object $TagFilter |
+                    Select-Object Name,Description | Sort-Object -Property Name | 
+                        Out-ConsoleGridView -OutputMode Multiple -Title $GridViewTitle )
             }
-            elseif (Get-Command -Name Out-GridView -ErrorAction SilentlyContinue) {
-                [array]$ModulesToInstall = ( $ModuleList | 
-                    Select-Object Name,Category,Description  | 
-                        Sort-Object -Property Name | 
-                            Out-GridView -PassThru -Title $GridViewTitle )
+            elseif ($OutGridView) {
+                [array]$ModulesToInstall = ( $ModuleList |  Where-Object $TagFilter |
+                    Select-Object Name,Description  | Sort-Object -Property Name | 
+                        Out-GridView -PassThru -Title $GridViewTitle )
             }
             else {
                 # To Do: Check for admin and prompt to install features/modules or revert to 'All'.
                 Write-Information "Out-GridView and Out-ConsoleGridView were not found on your system. Would you like to install them?"
             }
         }
- 
+
         if ($All) {
             foreach ($module in $ModuleList) {
-                [array]$ModulesToInstall = $ModuleList
+                [array]$ModulesToInstall = $ModuleList | Where-Object $TagFilter
             }
         }
 
+<#
         if ($Tag) {
+            [array]$ModulesToInstall = $ModuleList | Where-Object { $ModuleFilter }
             Write-Output "You used the Tag parameter. This will be used in the future to select all modules that have the specified tag."
         }
+#>
 
         # Exit instead of installing if the user did not select either switch
-        if ( -not $All -and -not $SelectFromList ) {
+        if ( -not $All -and -not $SelectFromList -and -not $Tags ) {
             Write-Information -MessageData "No modules were selected for installation. Exiting..."
             break
         }
