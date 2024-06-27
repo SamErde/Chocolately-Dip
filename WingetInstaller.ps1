@@ -1,4 +1,4 @@
-function Run-WinDip {
+function Start-WinDip {
 
 [CmdletBinding()]
 param(
@@ -45,7 +45,7 @@ if ($InstallWinget) {
     Set-Location -Path "$Env:WinDir\Temp\WinGetInstall"
 
     $DownloadLinks = ( ((Invoke-WebRequest -Uri "https://github.com/microsoft/winget-cli/releases/latest" -UseBasicParsing).Links).Where({
-        $_.outerHtml -like "*/releases/download/*" }) ).href | ForEach {
+        $_.outerHtml -like "*/releases/download/*" }) ).href | ForEach-Object {
             -join ("https://github.com", $_)
         }
 
@@ -54,7 +54,7 @@ if ($InstallWinget) {
         Invoke-WebRequest -Uri $Link -OutFile $FileName
     }
 
-    $Packages = $DownloadLinks.Where({ $_ -like "*.msixbundle" }) | ForEach {
+    $Packages = $DownloadLinks.Where({ $_ -like "*.msixbundle" }) | ForEach-Object {
         $_ -replace '^.*/'
     }
 
@@ -65,4 +65,4 @@ if ($InstallWinget) {
 
 }
 
-Run-WinDip
+Start-WinDip

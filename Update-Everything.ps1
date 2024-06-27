@@ -1,5 +1,6 @@
 function Update-Everything {
     [CmdletBinding()]
+    [Diagnostics.CodeAnalysis.SuppressMessageAttribute('PSAvoidUsingWriteHost', '', Justification = 'Colors are beautiful')]
     [Alias("update")]
     param ()
 
